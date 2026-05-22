@@ -1,0 +1,19 @@
+# Ruteo de reportes por correo electronico.
+# Copia este archivo como config/email_routes.toml y ajusta los valores.
+# email_routes.toml esta en .gitignore — nunca se sube al repositorio.
+#
+# Campos:
+#   destinatarios  — lista de correos a los que se envia este bloque
+#   cobradores     — nombres de cobrador tal como aparecen en la BD (sin
+#                    distinguir mayusculas/minusculas)
+#   tipos          — extensiones a incluir: "pdf", "xlsx". Omitir = ambos.
+
+[[rutas]]
+destinatarios = ["responsable@tuempresa.com"]
+cobradores    = ["COBRADOR UNO", "COBRADOR DOS"]
+tipos         = ["pdf", "xlsx"]
+
+[[rutas]]
+destinatarios = ["gerencia@tuempresa.com"]
+cobradores    = ["COBRADOR UNO", "COBRADOR DOS", "COBRADOR TRES"]
+tipos         = ["pdf", "xlsx"]

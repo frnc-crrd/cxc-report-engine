@@ -1,0 +1,36 @@
+[project]
+name = "cxc-report-engine"
+version = "0.1.0"
+description = "Pipeline de auditoria de cuentas por cobrar para Microsip"
+requires-python = ">=3.12"
+dependencies = [
+    "fdb>=2.0",
+    "firebird-driver>=2.0",
+    "numpy>=1.26",
+    "openpyxl>=3.1",
+    "pandas>=2.0",
+    "psycopg2-binary>=2.9",
+    "pyarrow>=14.0",
+    "pydantic>=2.0",
+    "rich>=13.0",
+    "python-dotenv>=1.0",
+    "sqlalchemy>=2.0",
+    "tenacity>=9.0",
+    "reportlab>=4.5.1",
+    "msal>=1.28",
+    "requests>=2.32",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.10",
+    "pandas-stubs>=2.0",
+    "pytest>=8.0",
+]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_return_any = true
+warn_unused_ignores = true
+ignore_missing_imports = true

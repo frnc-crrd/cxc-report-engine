@@ -1,0 +1,16 @@
+[Unit]
+Description=CxC Report Engine — pipeline diario de auditoria
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=frnc
+WorkingDirectory=/home/frnc/Software/cxc_report_engine
+ExecStart=/home/frnc/Software/cxc_report_engine/scripts/pipeline_diario.sh
+StandardOutput=journal
+StandardError=journal
+TimeoutStartSec=7200
+
+[Install]
+WantedBy=multi-user.target

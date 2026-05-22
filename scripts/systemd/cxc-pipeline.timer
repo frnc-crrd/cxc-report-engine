@@ -1,0 +1,10 @@
+[Unit]
+Description=CxC Report Engine — disparo diario dias laborales
+
+[Timer]
+OnCalendar=Mon-Fri *-*-* 07:00:00
+Persistent=true
+Unit=cxc-pipeline.service
+
+[Install]
+WantedBy=timers.target

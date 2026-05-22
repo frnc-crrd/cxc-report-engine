@@ -1,0 +1,24 @@
+name: cxc_report_engine
+
+services:
+  cobrador-db:
+    image: postgres:16-alpine
+    container_name: cxc_cobrador_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${COBRADOR_DB_NAME:-cobrador}
+      POSTGRES_USER: ${COBRADOR_DB_USER:-cxc_admin}
+      POSTGRES_PASSWORD: ${COBRADOR_DB_PASSWORD}
+    ports:
+      - "${COBRADOR_DB_PORT:-5432}:5432"
+    volumes:
+      - cobrador_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${COBRADOR_DB_USER:-cxc_admin} -d ${COBRADOR_DB_NAME:-cobrador}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  cobrador_data:
+    driver: local

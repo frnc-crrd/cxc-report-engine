@@ -1,0 +1,75 @@
+[tools]
+python = "3.12"
+uv = "latest"
+
+# ── Auto-arranque al entrar al directorio ────────────────────────────────────
+# El venv se activa automáticamente via load-venv() en ~/.zshrc (chpwd hook).
+# Este hook arranca el contenedor PostgreSQL de cobradores en segundo plano.
+# Al salir no se detiene — usa `mise run db-down` para apagarlo manualmente.
+
+[hooks]
+enter = "podman compose up -d --quiet-pull 2>/dev/null || true"
+
+# ── Tareas de desarrollo ─────────────────────────────────────────────────────
+# Ejecutar con: mise run <nombre>
+# Con el venv activo (load-venv en zshrc), `python` ya resuelve al venv.
+
+[tasks.test]
+description = "Suite completa (unit + integración PostgreSQL si el contenedor está activo)"
+run = "python -m pytest tests/ -v --tb=short"
+
+[tasks.typecheck]
+description = "Verifica tipos con mypy --strict en src/, config/ y main.py"
+run = "mypy src/ config/ main.py"
+
+[tasks.test-unit]
+description = "Solo tests sin dependencias externas (no requiere Firebird ni PostgreSQL)"
+run = "python -m pytest tests/test_reporte_cobrador.py tests/test_excel_formatter.py -v --tb=short"
+
+[tasks.test-pipeline]
+description = "Pipeline nivel 1 con datos sintéticos (no requiere Firebird)"
+run = "python tests/test_pipeline.py --nivel 1"
+
+[tasks.install]
+description = "Sincroniza el entorno con pyproject.toml + uv.lock (runtime + dev)"
+run = "uv sync"
+
+[tasks.install-prod]
+description = "Sincroniza solo dependencias de produccion (sin pytest)"
+run = "uv sync --no-dev"
+
+[tasks.lock]
+description = "Regenera uv.lock desde pyproject.toml sin modificar el entorno"
+run = "uv lock"
+
+[tasks.run]
+description = "Ejecuta el pipeline completo de CxC"
+run = "python main.py"
+
+[tasks.db-up]
+description = "Levanta el contenedor PostgreSQL de cobradores"
+run = "podman compose up -d"
+
+[tasks.db-down]
+description = "Detiene el contenedor PostgreSQL de cobradores"
+run = "podman compose stop"
+
+[tasks.db-logs]
+description = "Logs del contenedor PostgreSQL (últimas 50 líneas)"
+run = "podman compose logs cobrador-db --tail=50"
+
+[tasks.db-reset]
+description = "DESTRUCTIVO: Destruye y recrea el contenedor y volumen de cobradores"
+run = "podman compose down -v && podman compose up -d"
+
+[tasks.cobrador-pendientes]
+description = "Lista clientes sin cobrador asignado (PENDIENTE)"
+run = "python -m src.cobrador_cli pendientes"
+
+[tasks.cobrador-listar]
+description = "Lista todas las asignaciones por cobrador"
+run = "python -m src.cobrador_cli listar"
+
+[tasks.cobrador-cobradores]
+description = "Resumen de cobradores y cantidad de clientes asignados"
+run = "python -m src.cobrador_cli cobradores"

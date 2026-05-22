@@ -1,0 +1,87 @@
+# ==============================================================================
+# @file         .gitignore
+# @project      Firebird Insight Engine (Microsip Audit)
+# @brief        Enterprise-grade Git exclusion rules.
+# ==============================================================================
+
+# --- SISTEMA (Linux/GNOME/Windows/macOS) ---
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+.directory
+*.tmp
+*.swp
+*~
+.fuse_hidden*
+
+# --- IDE (VS Code / PyCharm) ---
+.vscode/
+# Si prefieres compartir la configuración de VS Code con el equipo, comenta la línea de arriba y usa estas:
+#!.vscode/settings.json
+#!.vscode/tasks.json
+#!.vscode/launch.json
+.idea/
+
+# --- ENTORNO Y HERRAMIENTAS (Python, UV, Mise) ---
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.python-version
+.mise.local.toml
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# --- FRONTEND Y DASHBOARD (Streamlit) ---
+# Bloqueo estricto de credenciales locales de Streamlit
+.streamlit/secrets.toml
+# NOTA: .streamlit/config.toml SI debe ser rastreado por Git para forzar el tema UI.
+
+# --- CONFIGURACION SENSIBLE ---
+.env
+.env.local
+.env.*.local
+# settings.py suele ser el motor, pero si contiene credenciales hardcoded (no recomendado):
+# settings.py
+
+# --- DATOS PRIVADOS (PII: clientes, cobradores) ---
+# data/private/ contiene asignaciones cliente<->cobrador con nombres reales.
+# .gitkeep se rastrea para mantener la carpeta; el resto no.
+data/private/*
+!data/private/.gitkeep
+
+# --- DATOS DE AUDITORIA Y REPORTES (Case-Insensitive) ---
+# Bloqueamos carpetas de salida completas
+output/
+outputs/
+logs/
+*.log
+
+# Bloqueo de extensiones binarias y de exportacion
+# Previene la subida accidental de reportes exportados en la raiz o subdirectorios
+*.[pP][dD][fF]
+*.[xX][lL][sS][xX]
+*.[cC][sS][vV]
+*.[jJ][pP][gG]
+*.[jJ][pP][eE][gG]
+*.[pP][nN][gG]
+
+# --- CONFIGURACION DE RUTAS DE EMAIL (PII: correos y nombres reales) ---
+# Crea tu copia local a partir de config/email_routes.toml.example
+config/email_routes.toml
+
+# --- TOKENS OAUTH (Microsoft Graph API) ---
+.msal_token_cache.bin
+
+# --- BASE DE DATOS LOCALES ---
+*.fdb
+*.FDB
+*.gdb
+*.bak
+*.sqlite3
